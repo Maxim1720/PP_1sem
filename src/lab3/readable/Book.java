@@ -53,6 +53,11 @@ public class Book implements Readable {
         this.authors = authors;
     }
 
+    @Override
+    public int numOfAuthors() {
+        return authors.length;
+    }
+
     public double calculateAveragePages() {
         return numOfPages / (double)authors.length;
     }

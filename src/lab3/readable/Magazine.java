@@ -56,6 +56,11 @@ public class Magazine implements Readable {
     }
 
     @Override
+    public int numOfAuthors() {
+        return authors().length;
+    }
+
+    @Override
     public double calculateAveragePages() {
         return numOfPages / (double)editors.length;
     }

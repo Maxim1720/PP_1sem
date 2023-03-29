@@ -10,4 +10,6 @@ public interface Readable {
     double calculateAveragePages();
     String[] authors();
     void setAuthors(String[] authors);
+
+    int numOfAuthors();
 }
