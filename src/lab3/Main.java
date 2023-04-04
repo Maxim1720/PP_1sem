@@ -17,6 +17,17 @@ public class Main {
         base.add(new Magazine("Time", 50, new String[]{"Joe Bloggs"}));
         base.add(new Book("Data Structures", 400, new String[]{"Mary Johnson", "David Lee"}));
 
+
+        int authorsCount = 0;
+        for(Readable r : base){
+            for (String s: r.authors()){
+                if(s.length() == 5){
+                    authorsCount++;
+                }
+            }
+        }
+        System.out.println("Authors size equals 5 count: "+authorsCount);
+
         try {
             Book wrongBook = new Book("1984", 194, null);
             base.add(wrongBook);
