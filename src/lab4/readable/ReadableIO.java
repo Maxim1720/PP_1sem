@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.io.Writer;
 
-public interface ReadableIO extends Readable, Serializable {
+public interface ReadableIO extends Readable {
     void output(OutputStream out);
     void write(Writer out);
 }

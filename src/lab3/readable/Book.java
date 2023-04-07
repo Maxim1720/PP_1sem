@@ -64,7 +64,16 @@ public class Book implements Readable {
 
     @Override
     public String toString() {
-        return "Book: " + title + " (" + numOfPages + " pages) by " + Arrays.toString(authors);
+        String authorsStr = Arrays.toString(authors);
+        /*authorsStr = authorsStr.substring(1, authorsStr.length()-1);
+        String tmp = authorsStr;
+        authorsStr = "";
+
+        for (String s: tmp.split(",")){
+            authorsStr+=s;
+        }*/
+        return this.getClass().getSimpleName()+ " " + title + " " + numOfPages + " " + authorsStr;
+
     }
 
     @Override

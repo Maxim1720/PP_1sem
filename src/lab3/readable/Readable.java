@@ -2,7 +2,9 @@ package lab3.readable;
 
 import lab3.exception.InvalidNumOfPagesException;
 
-public interface Readable {
+import java.io.Serializable;
+
+public interface Readable extends Serializable {
     String getTitle();
     int getNumOfPages();
     void setTitle(String title);
