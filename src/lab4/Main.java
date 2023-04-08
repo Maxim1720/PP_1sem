@@ -7,10 +7,8 @@ import lab4.readable.ReadableIO;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.Scanner;
-import java.util.regex.Pattern;
+import java.util.function.Supplier;
 
 public class Main {
 
@@ -73,26 +71,12 @@ public class Main {
     }
 
 
-    private static void getFillInterface() throws InvalidNumOfPagesException {
-
+    private static void getFillInterface() throws InvalidNumOfPagesException, IOException {
         int c = 0;
         Scanner scanner = new Scanner(System.in);
         while (c != '\n') {
-
-            try {
-                FileInputStream fileInputStream = new FileInputStream(BIN_FILE_PATH);
-                System.out.println("-------Readables in bin file:-------");
-                while (fileInputStream.available() > 0){
-                    System.out.println(InputOutputUtils.input(fileInputStream).toString());
-                }
-                fileInputStream.close();
-                System.out.println("-----------------------------------");
-            } catch (FileNotFoundException e) {
-                System.out.println("!!!!!file did not created!!!!");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
+            outputReadablesFromFiles();
+            System.out.println();
             System.out.println("Choose readable object: 1)Book 2)Magazine");
             System.out.print("readable number: ");
             c = scanner.nextInt();
@@ -113,7 +97,7 @@ public class Main {
 
             System.out.println("Please, write authors of this readable: ");
             for (int i=0;i<authors.length;i++){
-                authors[i] = scanner.next();
+                authors[i] = scanner.nextLine();
             }
             readableIO.setAuthors(authors);
 
@@ -124,7 +108,7 @@ public class Main {
             switch (c){
                 case 1:
                     try {
-                        savingReadable(readableIO);
+                        saveReadable(readableIO);
                         System.out.println("Readable saved successfully");
                     } catch (IOException e) {
                         System.out.println("I can't save this readable :(");
@@ -147,7 +131,80 @@ public class Main {
 
     }
 
-    private static void savingReadable(ReadableIO readableIO) throws IOException {
+
+
+
+    private static void outputReadablesFromFiles() throws IOException {
+        try (FileInputStream fileInputStream = new FileInputStream(SER_FILE_PATH)) {
+            System.out.println("---SER---");
+            outputReadables(getReadables(() -> {
+                try {
+                    return fileInputStream.available() > 0;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }, () -> {
+                try {
+                    return InputOutputUtils.deserialize(fileInputStream);
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        try (FileInputStream fileInputStream = new FileInputStream(BIN_FILE_PATH)) {
+            System.out.println("---BIN---");
+            outputReadables(getReadables(() -> {
+                try {
+                    return fileInputStream.available() > 0;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }, () -> {
+                try {
+                    return InputOutputUtils.input(fileInputStream);
+                } catch (InvalidNumOfPagesException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        try (FileReader fileReader = new FileReader(TXT_FILE_PATH)) {
+            System.out.println("---TXT---");
+            outputReadables(getReadables(() -> {
+                try {
+                    return fileReader.ready();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }, () -> {
+                try {
+                    return InputOutputUtils.read(fileReader);
+                } catch (InvalidNumOfPagesException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static ReadableIO[] getReadables(Supplier<Boolean> availableRead, Supplier<ReadableIO> readableIOSupplier) throws IOException {
+        ArrayList<ReadableIO> readableIOS = new ArrayList<>();
+        while (availableRead.get()){
+            readableIOS.add(readableIOSupplier.get());
+        }
+        return readableIOS.toArray(new ReadableIO[]{});
+    }
+    private static void outputReadables(ReadableIO[] readableIOS){
+        for (ReadableIO r : readableIOS){
+            System.out.println(r);
+        }
+    }
+
+    private static void saveReadable(ReadableIO readableIO) throws IOException {
         System.out.println("how will save readable? : 1)serialize 2)binary 3) as text");
         Scanner scanner = new Scanner(System.in);
         int c = scanner.nextInt();
