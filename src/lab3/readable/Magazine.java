@@ -67,7 +67,8 @@ public class Magazine implements Readable {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName()+" " + title + " " + numOfPages + " " + Arrays.toString(editors);
+        String authorsStr = Arrays.toString(editors);
+        return this.getClass().getSimpleName()+ " " + title + " " + numOfPages + " " + authorsStr;
     }
 
     @Override

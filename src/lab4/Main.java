@@ -19,122 +19,64 @@ public class Main {
 
     public static String TXT_FILE_PATH = FILES_PATH+"/"+FILE_NAME+".txt";
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InvalidNumOfPagesException {
-
+    public static void main(String[] args) throws IOException, InvalidNumOfPagesException {
         getFillInterface();
-
-        String filesPath = FILES_PATH;
-
-        System.out.println("--------Readable---------");
-        ReadableIO readableIO = new BookIO();
-        readableIO.setAuthors(new String[]{"lo", "h"});
-        readableIO.setNumOfPages(12);
-        readableIO.setTitle("dwad");
-        System.out.println(readableIO);
-
-        System.out.println("-----------Output-Input-----------");
-        FileOutputStream fileOutputStream = new FileOutputStream(filesPath+"/readables.bin", true);
-        FileInputStream fileInputStream = new FileInputStream(filesPath+"/readables.bin");
-
-        InputOutputUtils.output(readableIO, fileOutputStream);
-        fileOutputStream.close();
-
-        while (fileInputStream.available() > 0){
-            ReadableIO readableIO1 = InputOutputUtils.input(fileInputStream);
-            System.out.println(readableIO1);
-        }
-        fileInputStream.close();
-
-        System.out.println("------------Write-Read-------------");
-        FileWriter fileWriter = new FileWriter(filesPath+"/readables.txt", true);
-        InputOutputUtils.write(readableIO, fileWriter);
-        fileWriter.close();
-
-        FileReader fileReader = new FileReader(filesPath+"/readables.txt");
-        while (fileReader.ready()){
-            ReadableIO r = InputOutputUtils.read(fileReader);
-            System.out.println(r);
-        }
-        fileReader.close();
-
-        System.out.println("------Serializable-Deserializable----------");
-        FileOutputStream fileOutputStream1 = new FileOutputStream(filesPath+"/readables.ser", true);
-        FileInputStream fileInputStream1 = new FileInputStream(filesPath+"/readables.ser");
-
-
-        InputOutputUtils.serialize(readableIO, fileOutputStream1);
-        fileOutputStream1.close();
-
-        while (fileInputStream1.available()>0){
-            System.out.println(InputOutputUtils.deserialize(fileInputStream1).toString());
-        }
     }
 
 
     private static void getFillInterface() throws InvalidNumOfPagesException, IOException {
-        int c = 0;
-        Scanner scanner = new Scanner(System.in);
-        while (c != '\n') {
+        while (!exit()) {
             outputReadablesFromFiles();
             System.out.println();
-            System.out.println("Choose readable object: 1)Book 2)Magazine");
-            System.out.print("readable number: ");
-            c = scanner.nextInt();
-            ReadableIO readableIO;
-            switch (c) {
-                case 1 -> readableIO = new BookIO();
-                case 2 -> readableIO = new MagazineIO();
-                default -> throw new RuntimeException("Incorrect readable number");
-            }
-            System.out.println("Please, write title of this readable: ");
-            readableIO.setTitle(scanner.nextLine());
-            System.out.print("Please, write number of pages of this readable: ");
-            readableIO.setNumOfPages(scanner.nextInt());
-
-
-            System.out.print("authors count: ");
-            String[] authors = new String[scanner.nextInt()];
-
-            System.out.println("Please, write authors of this readable: ");
-            for (int i=0;i<authors.length;i++){
-                authors[i] = scanner.nextLine();
-            }
-            readableIO.setAuthors(authors);
-
+            ReadableIO readableIO = getFilledReadable();
             System.out.println("Readable: " + readableIO);
-            System.out.println("Can I save this? : 1) yes 2) no");
-
-            c = scanner.nextInt();
-            switch (c){
-                case 1:
-                    try {
-                        saveReadable(readableIO);
-                        System.out.println("Readable saved successfully");
-                    } catch (IOException e) {
-                        System.out.println("I can't save this readable :(");
-                    }
-                case 2:
-                    continue;
-            }
-
-
-            System.out.println("Want to exit? 1)yes 2)no");
-            c = scanner.nextInt();
-            switch (c){
-                case 1 -> {
-                    return;
-                }
-                case 2 ->{
-                }
-            }
+            save(readableIO);
         }
-
     }
 
+    private static ReadableIO getFilledReadable() throws IOException, InvalidNumOfPagesException {
+        String answer;
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Choose readable object: 1)Book 2)Magazine");
+        System.out.print("readable number: ");
+        answer = bufferedReader.readLine();
+        ReadableIO readableIO;
+        switch (answer) {
+            case "1" -> readableIO = new BookIO();
+            case "2" -> readableIO = new MagazineIO();
+            default -> throw new RuntimeException("Incorrect readable number");
+        }
+        System.out.print("Please, write title of this readable: ");
+        readableIO.setTitle(bufferedReader.readLine());
+        System.out.print("Please, write number of pages of this readable: ");
+        readableIO.setNumOfPages(Integer.parseInt(bufferedReader.readLine()));
 
+        System.out.print("authors count: ");
+        String[] authors = new String[Integer.parseInt(bufferedReader.readLine())];
 
+        System.out.println("Please, write authors of this readable: ");
+        for (int i=0;i<authors.length;i++){
+            authors[i] = bufferedReader.readLine();
+        }
+        readableIO.setAuthors(authors);
+        return readableIO;
+    }
 
-    private static void outputReadablesFromFiles() throws IOException {
+    private static void save(ReadableIO readableIO) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Can I save this? : 1) yes 2) no");
+        String answer = bufferedReader.readLine();
+
+        if (answer.equals("1")){
+            try {
+                saveReadable(readableIO);
+                System.out.println("Readable saved successfully");
+            } catch (IOException e) {
+                System.out.println("I can't save this readable :(");
+            }
+        }
+    }
+    private static void outputReadablesFromFiles() {
         try (FileInputStream fileInputStream = new FileInputStream(SER_FILE_PATH)) {
             System.out.println("---SER---");
             outputReadables(getReadables(() -> {
@@ -208,11 +150,33 @@ public class Main {
         System.out.println("how will save readable? : 1)serialize 2)binary 3) as text");
         Scanner scanner = new Scanner(System.in);
         int c = scanner.nextInt();
+
         switch (c){
-            case 1: InputOutputUtils.serialize(readableIO, new FileOutputStream(SER_FILE_PATH, true));
-            case 2: InputOutputUtils.output(readableIO, new FileOutputStream(BIN_FILE_PATH, true));
-            case 3: InputOutputUtils.write(readableIO, new FileWriter(TXT_FILE_PATH, true));
+            case 1:{
+                FileOutputStream fileOutputStream = new FileOutputStream(SER_FILE_PATH, true);
+                InputOutputUtils.serialize(readableIO, fileOutputStream);
+                fileOutputStream.close();
+                break;
+            }
+            case 2: {
+                FileOutputStream fileOutputStream = new FileOutputStream(BIN_FILE_PATH, true);
+                InputOutputUtils.output(readableIO, fileOutputStream);
+                fileOutputStream.close();
+                break;
+            }
+            case 3:{
+                FileWriter fileWriter = new FileWriter(TXT_FILE_PATH, true);
+                InputOutputUtils.write(readableIO, fileWriter);
+                fileWriter.close();
+                break;
+            }
         }
+    }
+
+    private static boolean exit() {
+        System.out.println("exit? :1)yes 2)no");
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextInt() == 1;
     }
 
 }

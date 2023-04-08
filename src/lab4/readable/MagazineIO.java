@@ -4,6 +4,7 @@ import lab3.exception.InvalidNumOfPagesException;
 import lab3.readable.Magazine;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class MagazineIO extends Magazine implements ReadableIO {
@@ -19,18 +20,19 @@ public class MagazineIO extends Magazine implements ReadableIO {
     @Override
     public void output(OutputStream out) {
         try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-            objectOutputStream.writeObject(this);
-        } catch (IOException e){
-            System.out.println("can't output this magazine: " + this);
+            out.write(this.toString().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }
 
     @Override
     public void write(Writer out) {
-        PrintWriter writer = new PrintWriter(out);
-        writer.printf("Magazine %s %d %s%n", getTitle(), getNumOfPages(), Arrays.toString(authors()));
-        writer.flush();
+        try {
+            out.write(toString());
+        } catch (IOException e) {
+            System.out.println("I can't write this book: " + this);
+        }
     }
 }

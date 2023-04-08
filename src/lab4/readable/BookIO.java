@@ -22,11 +22,8 @@ public class BookIO extends Book implements ReadableIO {
 
     @Override
     public void output(OutputStream out) {
-
         try {
             out.write(this.toString().getBytes(StandardCharsets.UTF_8));
-            //ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-            //objectOutputStream.writeObject(this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

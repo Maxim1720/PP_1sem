@@ -56,14 +56,29 @@ public class InputOutputUtils {
             R readable = getReadable(type);
 
             tokenizer.nextToken();
-            readable.setTitle(tokenizer.sval);
+            String val = "";
+            if(tokenizer.ttype == StreamTokenizer.TT_WORD){
+                val = tokenizer.sval;
+            }
+            else if(tokenizer.ttype == StreamTokenizer.TT_NUMBER){
+                val = String.valueOf((int) tokenizer.nval);
+            }
+            readable.setTitle(val);
+
             tokenizer.nextToken();
             readable.setNumOfPages((int) tokenizer.nval);
 
             ArrayList<String> authors = new ArrayList<>();
             while (tokenizer.nextToken() != StreamTokenizer.TT_EOL) {
-                if (tokenizer.sval != null) {
-                    authors.add(tokenizer.sval);
+                val= "";
+                if(tokenizer.sval != null){
+                    val = tokenizer.sval;
+                }
+                else if(tokenizer.ttype == StreamTokenizer.TT_NUMBER){
+                    val = String.valueOf((int) tokenizer.nval);
+                }
+                if(!val.isEmpty()){
+                    authors.add(val);
                 }
             }
             readable.setAuthors(authors.toArray(new String[]{}));

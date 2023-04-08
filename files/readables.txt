@@ -1,0 +1,5 @@
+BookIO dwa 12 [dwa]
+MagazineIO magazine 12 [Lol]
+BookIO 1 1 [1]
+BookIO 1 1 [1]
+BookIO 1 1 [1]
