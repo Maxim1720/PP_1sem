@@ -151,24 +151,21 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int c = scanner.nextInt();
 
-        switch (c){
-            case 1:{
+        switch (c) {
+            case 1 -> {
                 FileOutputStream fileOutputStream = new FileOutputStream(SER_FILE_PATH, true);
                 InputOutputUtils.serialize(readableIO, fileOutputStream);
                 fileOutputStream.close();
-                break;
             }
-            case 2: {
+            case 2 -> {
                 FileOutputStream fileOutputStream = new FileOutputStream(BIN_FILE_PATH, true);
                 InputOutputUtils.output(readableIO, fileOutputStream);
                 fileOutputStream.close();
-                break;
             }
-            case 3:{
+            case 3 -> {
                 FileWriter fileWriter = new FileWriter(TXT_FILE_PATH, true);
                 InputOutputUtils.write(readableIO, fileWriter);
                 fileWriter.close();
-                break;
             }
         }
     }

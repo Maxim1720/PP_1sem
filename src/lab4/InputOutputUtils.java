@@ -19,9 +19,6 @@ public class InputOutputUtils {
 
     // чтение из байтового потока
     public static <R extends ReadableIO> R input(InputStream in) throws InvalidNumOfPagesException, IOException {
-        /*ObjectInputStream objectIn = new ObjectInputStream(in);
-        R r  = (R)objectIn.readObject();
-        return r;*/
         String content = "";
         int c;
         do {
@@ -29,11 +26,8 @@ public class InputOutputUtils {
             content += (char) c;
         }
         while (c!='\n');
-
-        //new String(in., StandardCharsets.UTF_8);
         StringReader stringReader = new StringReader(content);
-        R r = read(stringReader);
-        return r;
+        return read(stringReader);
     }
 
     // запись в символьный поток
@@ -98,9 +92,7 @@ public class InputOutputUtils {
             case "MagazineIO" ->{
                 return (R)new MagazineIO();
             }
-            default -> {
-                throw new IllegalStateException("Unexpected value: " + typeName);
-            }
+            default -> throw new IllegalStateException("Unexpected value: " + typeName);
         }
     }
 

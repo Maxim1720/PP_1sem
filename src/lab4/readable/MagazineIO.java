@@ -3,9 +3,10 @@ package lab4.readable;
 import lab3.exception.InvalidNumOfPagesException;
 import lab3.readable.Magazine;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public class MagazineIO extends Magazine implements ReadableIO {
 
