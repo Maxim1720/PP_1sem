@@ -3,8 +3,6 @@ package lab5.thread;
 import lab4.readable.ReadableIO;
 import lab5.readable.ReadableWriter;
 
-import java.util.Random;
-
 public class ReadableWriterThread extends Thread{
     private final ReadableWriter readableWriter;
     public ReadableWriterThread(ReadableIO readableIO){
