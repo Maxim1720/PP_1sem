@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Synchronizer<R extends ReadableIO> {
+public class Synchronizer {
     private boolean isWriteTurn = true;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();

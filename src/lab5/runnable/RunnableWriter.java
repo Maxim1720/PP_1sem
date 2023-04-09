@@ -6,10 +6,10 @@ import java.util.Random;
 
 public class RunnableWriter implements Runnable{
 
-    private final Synchronizer<ReadableIO> synchronizer;
+    private final Synchronizer synchronizer;
     private final ReadableIO readableIO;
 
-    public RunnableWriter(Synchronizer<ReadableIO> synchronizer, ReadableIO readableIO){
+    public RunnableWriter(Synchronizer synchronizer, ReadableIO readableIO){
         this.synchronizer = synchronizer;
         this.readableIO = readableIO;
     }

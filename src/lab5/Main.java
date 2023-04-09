@@ -52,7 +52,7 @@ public class Main {
     }
 
     private static void syncWriteRead(ReadableIO readableIO) throws InterruptedException {
-        Synchronizer<ReadableIO> synchronizer = new Synchronizer<>();
+        Synchronizer synchronizer = new Synchronizer();
 
         Thread writeThread = new Thread(new RunnableWriter(synchronizer,readableIO));
         Thread readThread = new Thread(new RunnableReader(synchronizer, readableIO));

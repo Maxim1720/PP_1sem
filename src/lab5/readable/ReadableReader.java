@@ -1,6 +1,5 @@
 package lab5.readable;
 
-import lab3.readable.Readable;
 import lab4.readable.ReadableIO;
 
 public class ReadableReader {

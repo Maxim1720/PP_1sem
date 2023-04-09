@@ -4,11 +4,11 @@ import lab4.readable.ReadableIO;
 
 public class RunnableReader implements Runnable{
 
-    private final Synchronizer<ReadableIO> synchronizer;
+    private final Synchronizer synchronizer;
 
     private final ReadableIO readableIO;
 
-    public RunnableReader(Synchronizer<ReadableIO> synchronizer, ReadableIO readableIO){
+    public RunnableReader(Synchronizer synchronizer, ReadableIO readableIO){
         this.synchronizer = synchronizer;
         this.readableIO = readableIO;
     }

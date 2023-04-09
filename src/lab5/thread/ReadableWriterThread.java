@@ -1,9 +1,6 @@
 package lab5.thread;
 
-import lab3.readable.Readable;
 import lab4.readable.ReadableIO;
-import lab5.readable.ReadableWriter;
-import lab5.runnable.Synchronizer;
 
 import java.util.Random;
 
