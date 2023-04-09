@@ -1,7 +1,5 @@
 package lab5.runnable;
 
-import lab4.readable.ReadableIO;
-
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
