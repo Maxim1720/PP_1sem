@@ -20,4 +20,8 @@ public class IOUtils extends IOSyncUtils {
     public static ReadableIterable createInstance(){
         return factory.createInstance();
     }
+
+    public static ReadableIterable createInstance(String title, int numOfPages, String[] authors){
+        return factory.createInstance(title,numOfPages,authors);
+    }
 }
