@@ -1,6 +1,5 @@
 package lab6.readable;
 
-import lab3.exception.InvalidNumOfPagesException;
 import lab6.iterable.AuthorsIterator;
 import lab6.iterable.ReadableIterable;
 
@@ -37,7 +36,7 @@ public class UnmodifialbeReadable implements ReadableIterable {
     }
 
     @Override
-    public void setNumOfPages(int numOfPages) throws InvalidNumOfPagesException {
+    public void setNumOfPages(int numOfPages) {
         throw new UnsupportedOperationException();
     }
 
