@@ -1,4 +1,4 @@
-package lab7.view;
+package lab7.view.component;
 
 import java.awt.*;
 

@@ -1,5 +1,7 @@
 package lab7.view;
 
+import lab7.view.component.MinMaxComponent;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;

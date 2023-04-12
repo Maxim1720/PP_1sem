@@ -1,13 +1,12 @@
 package lab7.view;
 
-import lab7.view.utils.BoxCreator;
+import lab7.view.component.AnswerComponent;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class AnswerView extends JPanel implements AnswerComponent, Restartable{
+public class AnswerView extends JPanel implements AnswerComponent {
 
     private final JLabel answerLabel;
     private final JButton lowerBtn;
@@ -87,8 +86,4 @@ public class AnswerView extends JPanel implements AnswerComponent, Restartable{
         return this;
     }
 
-    @Override
-    public void onRestart(Runnable runnable) {
-        runnable.run();
-    }
 }
