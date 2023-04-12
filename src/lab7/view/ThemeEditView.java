@@ -12,15 +12,28 @@ public class ThemeEditView extends JPanel implements ThemeChangeComponent {
     UIManager.LookAndFeelInfo[] themes;
 
     public ThemeEditView(){
-        themes = Arrays.stream(UIManager.getInstalledLookAndFeels()).toList().toArray(new UIManager.LookAndFeelInfo[]{});
-        setLayout(new GridLayout(themes.length, 1));
-        ButtonGroup buttonGroup = new ButtonGroup();
 
+        JLabel label = new JLabel("Themes:");
+
+
+        themes = Arrays.stream(UIManager.getInstalledLookAndFeels()).toList().toArray(new UIManager.LookAndFeelInfo[]{});
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.CENTER;
+        add(label,c);
+
+        c.gridy=1;
+        c.gridx = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+
+        ButtonGroup buttonGroup = new ButtonGroup();
         for (UIManager.LookAndFeelInfo l : themes){
             JRadioButton radioButton = new JRadioButton(l.getName());
             radioButton.addActionListener(this);
             buttonGroup.add(radioButton);
-            add(radioButton);
+            add(radioButton,c);
+            c.gridy= c.gridy+1;
         }
     }
 

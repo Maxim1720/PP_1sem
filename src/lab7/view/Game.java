@@ -60,7 +60,7 @@ public class Game extends JFrame {
 
         answerComponent.lower().addActionListener(l -> {
             try {
-                guessNumber = numberGenerator.generate(numberGenerator.getMin(), guessNumber);
+                guessNumber = numberGenerator.generate(numberGenerator.getMin(), guessNumber-1);
                 answerComponent.answerLabel().setText(String.valueOf(guessNumber));
             }
             catch (IncorrectNumberIntervalException e){
@@ -92,7 +92,7 @@ public class Game extends JFrame {
 
         setLayout(new GridLayout(3, 1));
         setVisible(true);
-        setSize(300, 400);
+        setSize(300, 500);
         setResizable(false);
     }
 

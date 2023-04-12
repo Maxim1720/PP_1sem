@@ -23,7 +23,7 @@ public class NumberGeneratorImpl implements NumberGenerator{
         this.min = min;
         this.max = max;
 
-        if(this.min>=this.max){
+        if(this.min>this.max){
             throw new IncorrectNumberIntervalException("min must be lower than max");
         }
         return (max+min)/2;
