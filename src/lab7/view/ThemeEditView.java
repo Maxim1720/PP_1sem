@@ -48,20 +48,11 @@ public class ThemeEditView extends JPanel implements ThemeChangeComponent {
         try {
             String className = Arrays.stream(themes)
                     .filter(t-> t.getName().equals(radioButton.getText())).toList().get(0).getClassName();
-
-            Class<?> clazz = Class.forName(className);
-
             UIManager.setLookAndFeel(className);
-
             SwingUtilities.updateComponentTreeUI(this.getParent());
 
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
-        } catch (InstantiationException ex) {
-            throw new RuntimeException(ex);
-        } catch (IllegalAccessException ex) {
-            throw new RuntimeException(ex);
-        } catch (UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException ex) {
             throw new RuntimeException(ex);
         }
     }
