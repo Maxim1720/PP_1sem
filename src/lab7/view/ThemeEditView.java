@@ -32,6 +32,9 @@ public class ThemeEditView extends JPanel implements ThemeChangeComponent {
             JRadioButton radioButton = new JRadioButton(l.getName());
             radioButton.addActionListener(this);
             buttonGroup.add(radioButton);
+            if(UIManager.getLookAndFeel().getName().equals(l.getName())){
+                radioButton.setSelected(true);
+            }
             add(radioButton,c);
             c.gridy= c.gridy+1;
         }
