@@ -12,10 +12,10 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class Game extends JFrame {
-    private NumberGenerator numberGenerator;
-    private AnswerComponent answerComponent;
-    private MinMaxComponent minMaxComponent;
-    private ThemeChangeComponent themeChangeComponent;
+    private final NumberGenerator numberGenerator;
+    private final AnswerComponent answerComponent;
+    private final MinMaxComponent minMaxComponent;
+    private final ThemeChangeComponent themeChangeComponent;
 
     private int guessNumber;
     public Game() {
@@ -26,62 +26,22 @@ public class Game extends JFrame {
         minMaxComponent = new MinMaxView();
         themeChangeComponent = new ThemeEditView();
 
-
         Arrays.stream(answerComponent.getComponents()).forEach(c -> c.setEnabled(false));
         minMaxComponent.guess().addActionListener(l -> {
             try {
-                guessNumber = numberGenerator.generate(
-                        Integer.parseInt(minMaxComponent.min().getText()),
-                        Integer.parseInt(minMaxComponent.max().getText())
-                );
-                answerComponent.answerLabel().setText(String.valueOf(guessNumber));
-                Arrays.stream(answerComponent.getComponents()).forEach(c -> c.setEnabled(true));
-                Arrays.stream(minMaxComponent.getComponents()).forEach(c -> c.setEnabled(false));
-            }catch (IncorrectNumberIntervalException | NumberFormatException e){
+                tryGetGuess();
+                switchToGetAnswer();
+            } catch (IncorrectNumberIntervalException | NumberFormatException e) {
                 showError("error", e.getMessage());
             }
-
         });
-
-
-
-        answerComponent.higher().addActionListener(l -> {
-            try {
-                guessNumber = numberGenerator.generate(guessNumber+1, numberGenerator.getMax());
-                answerComponent.answerLabel().setText(String.valueOf(guessNumber));
-            } catch (IncorrectNumberIntervalException e){
-                if(needRestart("you are not playing by the rules", "retry?")){
-                    restartGame();
-                }else{
-                    this.dispose();
-                }
-            }
-        });
-
-        answerComponent.lower().addActionListener(l -> {
-            try {
-                guessNumber = numberGenerator.generate(numberGenerator.getMin(), guessNumber-1);
-                answerComponent.answerLabel().setText(String.valueOf(guessNumber));
-            }
-            catch (IncorrectNumberIntervalException e){
-                if(needRestart("you are not playing by the rules", "retry?")){
-                    restartGame();
-                }else {
-                    this.dispose();
-                }
-            }
-
-        });
+        answerComponent.higher().addActionListener(l -> setRange(guessNumber + 1, numberGenerator.getMax()));
+        answerComponent.lower().addActionListener(l -> setRange(numberGenerator.getMin(), guessNumber - 1));
 
         answerComponent.guessed().addActionListener(l -> {
-            Arrays.stream(minMaxComponent.getComponents()).forEach(c-> c.setEnabled(true));
+            Arrays.stream(minMaxComponent.getComponents()).forEach(c -> c.setEnabled(true));
             Arrays.stream(answerComponent.getComponents()).forEach(c -> c.setEnabled(false));
-            if(needRestart("Cool", "WIN! Retry game?")){
-                restartGame();
-            }
-            else{
-                this.dispose();
-            }
+            showOfferToRestart("Cool", "WIN! Retry game?");
         });
 
 
@@ -96,6 +56,43 @@ public class Game extends JFrame {
         setResizable(false);
     }
 
+    private void tryGetGuess(){
+        guessNumber = numberGenerator.generate(
+                Integer.parseInt(minMaxComponent.min().getText()),
+                Integer.parseInt(minMaxComponent.max().getText())
+        );
+    }
+
+    private void switchToGetAnswer(){
+        answerComponent.answerLabel().setText(String.valueOf(guessNumber));
+        Arrays.stream(answerComponent.getComponents()).forEach(c -> c.setEnabled(true));
+        Arrays.stream(minMaxComponent.getComponents()).forEach(c -> c.setEnabled(false));
+    }
+
+    private void setRange(int min, int max){
+        try {
+            guessNumber = numberGenerator.generate(min, max);
+            answerComponent.answerLabel().setText(String.valueOf(guessNumber));
+        }
+        catch (IncorrectNumberIntervalException e){
+            showNotPlayingByTheRules();
+        }
+    }
+
+
+    private void showNotPlayingByTheRules(){
+        showOfferToRestart("you are not playing by the rules", "retry?");
+    }
+    private void showOfferToRestart(String title, String message){
+        if(needRestart(title, message)){
+            restartGame();
+        }else {
+            this.dispose();
+        }
+    }
+    private void onGuessed(){
+
+    }
 
     private void restartGame(){
         answerComponent.answerLabel().setText("");
