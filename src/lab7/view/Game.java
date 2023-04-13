@@ -83,15 +83,12 @@ public class Game extends JFrame {
     private void showNotPlayingByTheRules(){
         showOfferToRestart("you are not playing by the rules", "retry?");
     }
-    private void showOfferToRestart(String title, String message){
-        if(needRestart(title, message)){
+    private void showOfferToRestart(String title, String message) {
+        if (needRestart(title, message)) {
             restartGame();
-        }else {
+        } else {
             this.dispose();
         }
-    }
-    private void onGuessed(){
-
     }
 
     private void restartGame(){
